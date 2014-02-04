@@ -6,5 +6,5 @@ Name=CUI AUR Updates
 GenericName=Cower Updates Interactive
 Comment=Download AUR updates
 Icon=system
-Exec=/home/jpope/bin/cui
+Exec=cui
 Categories=System;

@@ -45,7 +45,7 @@ opendir=$(kdialog --name "$name" --title "$title" --icon $icon --radiolist "Open
   elif [ $opendir = 3 ]; then
     dolphin $builddir &>/dev/null &
   elif [ $opendir = 4 ]; then
-    sleep 0s
+    echo " "
   else
     exit 1
   fi
@@ -76,12 +76,12 @@ build=$(kdialog --name "$name" --title "$title" --icon $icon --yesno "Would you 
       echo " "
       build=$(kdialog --name "$name" --title "$title" --icon $icon --yesno "Would you like to build another package?\n\nIf yes, select package directory from next window.";echo $?;)
     elif [ $build = 1 ]; then
-      echo not updating
+      echo " "
     else
-      exit 1
+      echo " "
     fi
   done
 
-kdialog --name "$name" --title "$title" --icon $icon --passivepopup "Cower Interactive is complete. Have a nice day." &
+kdialog --name "$name" --title "$title" --icon $icon --passivepopup "Cower Interactive is complete. Have a nice day."
 
 exit 0

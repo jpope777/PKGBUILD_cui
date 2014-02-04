@@ -30,6 +30,7 @@ updpackages=$(cat $downloadlist|wc -l)
 
   if [ $updpackages = 0 ]; then
     kdialog --name "$name" --title "$title - Updates: $updpackages" --icon $icon --msgbox "No updates available."
+    exit 0
   else
     kdialog --name "$name" --title "$title - Updates: $updpackages" --icon $icon --textbox $downloadlist 512 256
   fi

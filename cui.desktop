@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Terminal=true
+Name=CUI AUR Updates
+GenericName=Cower Updates Interactive
+Comment=Download AUR updates
+Icon=system
+Exec=/home/jpope/bin/cui
+Categories=System;

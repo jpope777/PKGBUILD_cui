@@ -1,0 +1,83 @@
+#!/bin/sh
+## CUI (cower updates interactive)
+##
+## Archlinux+KDE centric script for updating packages from the AUR
+## This script is very early in development
+## and may blow up your machine
+##
+## Author: jpope <jpope@jpope.org>
+## License: wtfpl
+
+builddir=~/tmp/aur
+downloadlist=~/tmp/aur/downloads.txt
+name="Cower Interactive"
+title="CUI - AUR Updates"
+icon=system
+build=0
+
+if [ -d $builddir ]; then
+  rm -rf $builddir
+fi
+
+mkdir $builddir
+cd $builddir
+
+#kdialog --name "$name" --title "$title" --icon $icon --passivepopup "Checking for updates from the AUR" &
+echo ":: Checking for updates from the AUR"
+
+cower -udd &> $downloadlist
+updpackages=$(cat $downloadlist|wc -l)
+
+kdialog --name "$name" --title "$title - Updates: $updpackages" --icon $icon --textbox $downloadlist 512 256
+
+opendir=$(kdialog --name "$name" --title "$title" --icon $icon --radiolist "Open PKGBUILDs and download directory?" 1 "Both" on 2 "PKGBUILDs only" off 3 "Directory only" off 4 Neither off)
+
+  if [ $opendir = 1 ]; then
+    kate */PKGBUILD &>/dev/null &
+    dolphin $builddir &>/dev/null &
+  elif [ $opendir = 2 ]; then
+    kate */PKGBUILD &>/dev/null &
+  elif [ $opendir = 3 ]; then
+    dolphin $builddir &>/dev/null &
+  elif [ $opendir = 4 ]; then
+    sleep 0s
+  else
+    exit 1
+  fi
+
+build=$(kdialog --name "$name" --title "$title" --icon $icon --yesno "Would you like to build a package?\n\nIf yes, select package directory from next window.";echo $?;)
+
+  while [ $build = 0 ]; do
+    cd $builddir
+    if [ $build = 0 ]; then
+
+      i=1
+      pkglist=$({
+        while [ $i -le $updpackages ]; do
+        list=$(cat downloads.txt |awk -F ':: ' '{print $2}'|awk -F 'downloaded' '{print $1}'|sed -n $i\p)
+        echo $i $list off
+        i=$(( $i + 1 ))
+        done
+        }|tr '\n' ' ')
+      buildme=$(kdialog --name "$name" --title "$title" --icon $icon --radiolist "Which package would you like to build and install?" $(echo $pkglist))
+
+      pkgdir=$(cat downloads.txt |awk -F ':: ' '{print $2}'|awk -F ' downloaded' '{print $1}'|sed -n $buildme\p)
+
+      echo ":: building $pkgdir"
+      echo " "
+      cd $pkgdir
+
+      makepkg -si
+      echo " "
+      build=$(kdialog --name "$name" --title "$title" --icon $icon --yesno "Would you like to build another package?\n\nIf yes, select package directory from next window.";echo $?;)
+    elif [ $build = 1 ]; then
+      echo not updating
+    else
+      exit 1
+    fi
+  done
+
+#kdialog --name "$name" --title "$title" --icon $icon --passivepopup "Cower Interactive is complete. Have a nice day." &
+echo ":: Cower Interactive is complete. Have a nice day."
+
+exit 0

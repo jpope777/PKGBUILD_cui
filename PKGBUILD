@@ -1,6 +1,6 @@
 # Maintainer: Jeremy Pope <jpope@jpope.org> PGP-Key: E00B4261
 pkgname=cui-git
-pkgver=0.1.1
+pkgver=0.1.2
 pkgrel=1
 pkgdesc="CUI is a cower wrapper with KDE bindings."
 url='https://jpope.org'
@@ -17,5 +17,5 @@ package() {
   install -Dm755 cui $pkgdir/usr/bin/cui
   install -Dm644 cui.desktop $pkgdir/usr/share/applications/cui.desktop
 }
-sha256sums=('d28130a83193aa14a1e1b80dfc8da56b84cc100bc3de127f5a0c7576a5c50cef'
+sha256sums=('8017cb3a194e4d9d7868833379b169afbf70a6e243b68a2bace99aa5ffeb47e6'
             'a980a4d5697fc684f49ae7b41f7036fab645e74a1237754b199cf810a939be77')

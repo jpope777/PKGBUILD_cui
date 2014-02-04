@@ -28,7 +28,11 @@ echo ":: Checking for updates from the AUR"
 cower -udd &> $downloadlist
 updpackages=$(cat $downloadlist|wc -l)
 
-kdialog --name "$name" --title "$title - Updates: $updpackages" --icon $icon --textbox $downloadlist 512 256
+  if [ $updpackages = 0 ]; then
+    kdialog --name "$name" --title "$title - Updates: $updpackages" --icon $icon --msgbox "No updates available."
+  else
+    kdialog --name "$name" --title "$title - Updates: $updpackages" --icon $icon --textbox $downloadlist 512 256
+  fi
 
 opendir=$(kdialog --name "$name" --title "$title" --icon $icon --radiolist "Open PKGBUILDs and download directory?" 1 "Both" on 2 "PKGBUILDs only" off 3 "Directory only" off 4 Neither off)
 
